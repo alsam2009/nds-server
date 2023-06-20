@@ -48,3 +48,15 @@ export const getNews = async (req, res) => {
   }
 }
 
+export const getNewsById = async (req, res) => {
+    try {
+      const data = await News.findById(req.params.id).exec();
+      res.json(data);
+  } catch (e) {
+    res.status(500).json({
+      message: "На сервере произошла ошибка. Попробуйте чутка позже.",
+    });
+  }
+}
+
+
