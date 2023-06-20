@@ -27,10 +27,12 @@ export const getNews = async (req, res) => {
     if (query) {
       const re = new RegExp(query, 'i')
       const data = await News
-        .find().or([
+        .find()
+        .or([
           { title: { $regex: re } },
           { article_preview: { $regex: re } }
         ])
+        .sort({ publication_date: -1 })
         // Альтернативный вариант поиска: .find({$text: { $search: query, $language: 'ru'}}), но ищет только по полям из индекса и точное совпадение слова
         return res.json(data)
     }
