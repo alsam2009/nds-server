@@ -6,6 +6,9 @@ import cors from 'cors'
 import router from './routes/news.route.js'
 
 const app = express();
+app.disable('x-powered-by')
+
+
 dotenv.config();
 
 // Constants

@@ -56,7 +56,7 @@ export const getNewsById = async (req, res) => {
       res.json(data);
   } catch (e) {
     res.status(500).json({
-      message: "На сервере произошла ошибка. Попробуйте чутка позже.",
+      message: "На сервере произошла ошибка. Попробуйте позже.",
     });
   }
 }
