@@ -8,9 +8,7 @@ import router from './routes/news.route.js'
 const app = express();
 app.disable('x-powered-by')
 
-
 dotenv.config();
-
 // Constants
 const PORT = process.env.PORT || 3000
 const DB_CONNECT = process.env.DB_CONNECT
