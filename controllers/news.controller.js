@@ -69,7 +69,7 @@ export const getNewsById = async (req, res) => {
 export const sendNewsToTelegram = async (req, res) => {
 
   const { image_url, title, article_preview, article_url, publication_date, chatId } = req.body;
-
+  console.log(req.body)
   const message = `
   <b>${title}</b>
   <a href="${image_url}">&#8205;</a>
