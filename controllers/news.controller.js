@@ -24,8 +24,7 @@ export const getNews = async (req, res) => {
         .find({ tag_article: tag })
         .sort({ publication_date: -1 })
         .skip((page-1) * limit)
-        .limit(limit);
-      return res.json(data);
+      return res.json(data.slice(0, limit));
     }
     // Component Search
     if (query) {
