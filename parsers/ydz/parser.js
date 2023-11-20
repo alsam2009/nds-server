@@ -5,7 +5,7 @@ require('dotenv').config();
 
 import { sendMessageToTelegram } from '../../bot/sendMessage.js';
 import  { HEADERS, COOKIES } from './const.js';
-const axios = require('axios');
+import axios from 'axios';
 const fs = require('fs');
 const path = require('path');
 const { MongoClient } = require('mongodb');
