@@ -1,14 +1,21 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
 
-require('dotenv').config();
+import dotenv from 'dotenv';
+
+dotenv.config();
+// require('dotenv').config();
 
 import { sendMessageToTelegram } from '../../bot/sendMessage.js';
 import  { HEADERS, COOKIES } from './const.js';
 import axios from 'axios';
-const fs = require('fs');
-const path = require('path');
-const { MongoClient } = require('mongodb');
+import fs from 'fs';
+import path from 'path';
+import { MongoClient } from 'mongodb'
+
+// const fs = require('fs');
+// const path = require('path');
+// const { MongoClient } = require('mongodb');
 
 
 const headers = HEADERS;
