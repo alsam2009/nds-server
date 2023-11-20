@@ -1,11 +1,4 @@
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
-
 import dotenv from 'dotenv';
-
-dotenv.config();
-// require('dotenv').config();
-
 import { sendMessageToTelegram } from '../../bot/sendMessage.js';
 import  { HEADERS, COOKIES } from './const.js';
 import axios from 'axios';
@@ -13,10 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { MongoClient } from 'mongodb'
 
-// const fs = require('fs');
-// const path = require('path');
-// const { MongoClient } = require('mongodb');
-
+dotenv.config();
 
 const headers = HEADERS;
 const cookies = COOKIES;
@@ -117,7 +107,6 @@ function sendToTelegram(newNews, docsAfterSave) {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
-    timeZoneName: 'short',
   });
 
   const message = `
