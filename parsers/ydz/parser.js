@@ -114,7 +114,7 @@ function sendToTelegram(newNews, docsAfterSave) {
   });
 
   const message = `
-  <b>Парсер NDS упешно отработал:</b>
+  <b>Парсер NDS уcпешно отработал:</b>
 ${dateNow}
 Добавлено в базу новостей: <b>${newNews}</b>
 В базе новостей: <b>${docsAfterSave}</b>
