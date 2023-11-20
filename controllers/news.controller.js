@@ -1,5 +1,6 @@
 import News from '../models/News.js'
 import bot from '../bot/telegramBot.js'
+import startParser from "../parsers/ydz/parser.js";
 
 
 
@@ -91,11 +92,26 @@ export const sendNewsToTelegram = async (req, res) => {
         message: "На сервере произошла ошибка. Попробуйте позже.",
       });
     });
-
-
-  // sendTelegramNews(newsData);
-  // res.sendStatus(200);
 };
+
+export const launchParser = async (req, res) => {
+  try {
+    if ('start' in req.query) {
+      await startParser();
+      res.status(200).json({
+        message: 'Парсер успешно запущен.',
+      });
+    } else {
+      res.status(400).json({
+        message: 'Запрос некорректный. Попробуйте еще раз.',
+      });
+    }
+  } catch (e) {
+    res.status(500).json({
+      message: "Ошибка парсинга. Попробуйте позже.",
+    });
+  }
+}
 
 
 

@@ -14,11 +14,13 @@
   "author": "nds",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.0",
     "express": "^4.18.2",
+    "mongodb": "^6.3.0",
     "mongoose": "^7.3.0",
-    "node-telegram-bot-api": "^0.61.0"
+    "node-telegram-bot-api": "^0.64.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
