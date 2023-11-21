@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const sendMessageToTelegram = async (message) => {
-  const messageOptions = { parse_mode: 'HTML' };
   const chatId = process.env.CHAT_ID
   const botToken = process.env.TOKEN
 
