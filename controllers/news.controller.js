@@ -93,10 +93,10 @@ export const getNewsById = async (req, res) => {
 //     });
 // };
 
-export const launchParser = async (req, res) => {
+export const launchParser = (req, res) => {
   try {
     if ('start' in req.query) {
-      await startParser();
+      startParser()
       res.status(200).json({
         message: 'Парсер успешно запущен.',
       });

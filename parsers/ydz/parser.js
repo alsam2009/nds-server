@@ -173,7 +173,7 @@ async function main() {
       channelsInitDataBase.push(...channelData);
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Задержка 2 секунды
+    // await new Promise((resolve) => setTimeout(resolve, 2000)); // Задержка 2 секунды
 
     saveToMongoDB(channelsInitDataBase);
   }
@@ -182,4 +182,5 @@ async function main() {
 // Точка входа
 export default function startParser() {
   main()
+  return "ok"
 }
