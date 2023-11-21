@@ -1,5 +1,4 @@
 import News from '../models/News.js'
-import bot from '../bot/telegramBot.js'
 import startParser from "../parsers/ydz/parser.js";
 
 
@@ -65,34 +64,34 @@ export const getNewsById = async (req, res) => {
 }
 
 
-export const sendNewsToTelegram = async (req, res) => {
+// export const sendNewsToTelegram = async (req, res) => {
 
-  const { image_url, title, article_preview, article_url, publication_date, chatId } = req.body;
+//   const { image_url, title, article_preview, article_url, publication_date, chatId } = req.body;
 
-  const message = `
-  <b>${title}</b>
-  <a href="${image_url}">&#8205;</a>
-  ${article_preview} <a href="${article_url}"><u>Подробнее...</u></a>
+//   const message = `
+//   <b>${title}</b>
+//   <a href="${image_url}">&#8205;</a>
+//   ${article_preview} <a href="${article_url}"><u>Подробнее...</u></a>
 
 
-  <i>${publication_date}</i>
-  `;
-  const messageOptions = { parse_mode: 'HTML' };
+//   <i>${publication_date}</i>
+//   `;
+//   const messageOptions = { parse_mode: 'HTML' };
 
-  await bot.sendMessage(chatId, message, messageOptions)
-    .then(() => {
-      console.log('Новость успешно отправлена в Telegram');
-      res.status(200).json({
-        message: "Новость успешно отправлена в Telegram",
-      });
-    })
-    .catch((error) => {
-      console.error('Произошла ошибка при отправке новости в Telegram:', error);
-      res.status(500).json({
-        message: "На сервере произошла ошибка. Попробуйте позже.",
-      });
-    });
-};
+//   await bot.sendMessage(chatId, message, messageOptions)
+//     .then(() => {
+//       console.log('Новость успешно отправлена в Telegram');
+//       res.status(200).json({
+//         message: "Новость успешно отправлена в Telegram",
+//       });
+//     })
+//     .catch((error) => {
+//       console.error('Произошла ошибка при отправке новости в Telegram:', error);
+//       res.status(500).json({
+//         message: "На сервере произошла ошибка. Попробуйте позже.",
+//       });
+//     });
+// };
 
 export const launchParser = async (req, res) => {
   try {
