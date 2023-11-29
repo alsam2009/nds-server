@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import { sendMessageToTelegram } from '../../bot/sendMessage.js';
-import { HEADERS, COOKIES } from './const.js';
+import  { HEADERS, COOKIES } from './const.js';
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
-import { MongoClient } from 'mongodb';
+import { MongoClient } from 'mongodb'
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const headers = HEADERS;
 const cookies = COOKIES;
 
 function loadUrlsFromJson() {
-  const filePath = path.join(process.cwd(), 'parsers', 'ydz', 'urls_chanels_nds.json');
+  const filePath = path.join( process.cwd(), 'parsers', 'ydz', 'urls_chanels_nds.json');
 
   if (fs.existsSync(filePath)) {
     const jsonData = fs.readFileSync(filePath, 'utf8');
@@ -55,7 +55,9 @@ async function getChannelData(channelUrlApi) {
           const imageUrl = item.common_image.link;
           const articleUrl = item.share_link;
           const articlePreview = item.text;
-          const publicationDate = new Date().toISOString().slice(0, 10);
+          const publicationDate = new Date()
+            .toISOString()
+            .slice(0, 10)
 
           const tagChannel =
             tagsChannels[Math.floor(Math.random() * tagsChannels.length)];
@@ -73,7 +75,9 @@ async function getChannelData(channelUrlApi) {
 
       return channelData;
     } else {
-      throw new Error(`Что-то пошло не так... Ответ сервера: ${response.status}`);
+      throw new Error(
+        `Что-то пошло не так... Ответ сервера: ${response.status}`
+      );
     }
   } catch (error) {
     console.log('ERROR!!', error);
@@ -93,34 +97,30 @@ function getUrlApi(urlChannel) {
   return urlApi;
 }
 
-async function sendToTelegramAsync(newNews, docsAfterSave) {
-  return new Promise((resolve, reject) => {
-    const dateNow = new Date().toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    });
-
-    const message = `
-    <b>Парсер NDS уcпешно отработал:</b>
-  ${dateNow}
-  Добавлено в базу новостей: <b>${newNews}</b>
-  В базе новостей: <b>${docsAfterSave}</b>
-  `;
-    sendMessageToTelegram(message)
-      .then(() => resolve())
-      .catch((error) => reject(error));
+function sendToTelegram(newNews, docsAfterSave) {
+  const dateNow = new Date().toLocaleDateString('ru-RU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
   });
+
+  const message = `
+  <b>Парсер NDS уcпешно отработал:</b>
+${dateNow}
+Добавлено в базу новостей: <b>${newNews}</b>
+В базе новостей: <b>${docsAfterSave}</b>
+`;
+  sendMessageToTelegram(message)
 }
 
-async function saveToMongoDBAsync(channelsInitDataBase) {
+async function saveToMongoDB(channelsInitDataBase) {
   const uri = process.env.DB_CONNECT;
   const client = new MongoClient(uri);
-  let docsBeforeSave = 0;
+  let docsBeforeSave = 0; //
   let docsAfterSave = 0;
   let collection;
 
@@ -129,7 +129,8 @@ async function saveToMongoDBAsync(channelsInitDataBase) {
 
     const database = client.db('nds-app');
     collection = database.collection('news');
-    docsBeforeSave = await collection.countDocuments({}, { hint: '_id_' });
+    docsBeforeSave = await collection.countDocuments({}, { hint: "_id_" });
+
 
     // Вставляем новые записи в базу данных
     if (channelsInitDataBase.length > 0) {
@@ -141,11 +142,11 @@ async function saveToMongoDBAsync(channelsInitDataBase) {
   } catch (error) {
     if (error.code === 11000) {
       // Обрабатываем ошибку дубликата записи и не выводим ее в консоль
-      docsAfterSave = await collection.countDocuments({}, { hint: '_id_' });
-      const newNews = docsAfterSave - docsBeforeSave;
+      docsAfterSave = await collection.countDocuments({}, { hint: "_id_" });
+      const newNews =  docsAfterSave - docsBeforeSave
       console.log(`\nНовых записей: ${newNews}`);
       console.log(`Сейчас записей в БД: ${docsAfterSave}`);
-      await sendToTelegramAsync(newNews, docsAfterSave);
+      sendToTelegram(newNews, docsAfterSave)
     } else {
       // Выводим в консоль другие ошибки, отличные от ошибки дубликата ключа
       console.log('Failed to save data to MongoDB:', error);
@@ -155,38 +156,40 @@ async function saveToMongoDBAsync(channelsInitDataBase) {
   }
 }
 
-async function mainAsync(urlChannels) {
-  const channelsInitDataBase = [];
 
-  // Используем Promise.all для параллельного выполнения запросов
-  await Promise.all(
-    urlChannels.map(async (urlChannel) => {
-      const channelUrlApi = getUrlApi(urlChannel);
-      const channelData = await getChannelData(channelUrlApi);
-      channelsInitDataBase.push(...channelData);
-    })
-  );
-
-  await saveToMongoDBAsync(channelsInitDataBase);
-}
-
-// Точка входа
-export default function startParser() {
+async function main() {
   const initialDataFromJson = loadUrlsFromJson();
   const urlsFromJson = initialDataFromJson.urls;
 
   if (urlsFromJson && urlsFromJson.length > 0) {
-    return mainAsync(urlsFromJson)
-      .then(() => {
-        console.log('Parsing completed.');
-        return 'Parsing completed.';
-      })
-      .catch((error) => {
-        console.error('Error during parsing:', error);
-        throw error;
-      });
-  } else {
-    console.log('No URLs to parse.');
-    return Promise.resolve('No URLs to parse.');
+    const channelsInitDataBase = [];
+
+    for (let i = 0; i < urlsFromJson.length; i++) {
+      const urlChannel = urlsFromJson[i];
+
+      const channelUrlApi = getUrlApi(urlChannel);
+      const channelData = await getChannelData(channelUrlApi);
+      channelsInitDataBase.push(...channelData);
+    }
+
+    // await new Promise((resolve) => setTimeout(resolve, 2000)); // Задержка 2 секунды
+
+    saveToMongoDB(channelsInitDataBase);
   }
 }
+
+// Точка входа
+export default function startParser() {
+  return new Promise((resolve, reject) => {
+    main()
+      .then(() => {
+        console.log("Parsing completed.");
+        resolve("Parsing completed.");
+      })
+      .catch((error) => {
+        console.error("Error during parsing:", error);
+        reject(error);
+      });
+  });
+}
+
