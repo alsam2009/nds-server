@@ -171,22 +171,21 @@ async function mainAsync(urlChannels) {
 }
 
 // Точка входа
-export default function startParser() {
+export default async function startParser() {
   const initialDataFromJson = loadUrlsFromJson();
   const urlsFromJson = initialDataFromJson.urls;
 
   if (urlsFromJson && urlsFromJson.length > 0) {
-    return mainAsync(urlsFromJson)
-      .then(() => {
-        console.log('Parsing completed.');
-        return 'Parsing completed.';
-      })
-      .catch((error) => {
-        console.error('Error during parsing:', error);
-        throw error;
-      });
+    try {
+      await mainAsync(urlsFromJson);
+      console.log('Parsing completed.');
+      return 'Parsing completed.';
+    } catch (error) {
+      console.error('Error during parsing:', error);
+      throw error;
+    }
   } else {
     console.log('No URLs to parse.');
-    return Promise.resolve('No URLs to parse.');
+    return 'No URLs to parse.';
   }
 }
