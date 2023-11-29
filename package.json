@@ -9,9 +9,10 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js"
   },
   "keywords": [
-    "nds"
+    "nds, news delivery system"
   ],
-  "author": "nds",
+  "author": "DEN <den.fstack@ya.ru>",
+
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.2",
@@ -19,7 +20,8 @@
     "dotenv": "^16.3.0",
     "express": "^4.18.2",
     "mongodb": "^6.3.0",
-    "mongoose": "^7.3.0"
+    "mongoose": "^7.3.0",
+    "node-telegram-bot-api": "^0.64.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
