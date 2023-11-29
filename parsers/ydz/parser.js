@@ -10,7 +10,6 @@ dotenv.config();
 
 const headers = HEADERS;
 const cookies = COOKIES;
-const log = console.log;
 
 function loadUrlsFromJson() {
   const filePath = path.join( process.cwd(), 'parsers', 'ydz', 'urls_chanels_nds.json');
@@ -81,7 +80,7 @@ async function getChannelData(channelUrlApi) {
       );
     }
   } catch (error) {
-    log('ERROR!!', error);
+    console.log('ERROR!!', error);
     return ['У нас проблемы'];
   }
 }
@@ -138,19 +137,19 @@ async function saveToMongoDB(channelsInitDataBase) {
       const options = { ordered: false }; // Продолжаем вставку новостей, даже если возникнут дубликаты
       await collection.insertMany(channelsInitDataBase, options);
     } else {
-      log('No news to save.');
+      console.log('No news to save.');
     }
   } catch (error) {
     if (error.code === 11000) {
       // Обрабатываем ошибку дубликата записи и не выводим ее в консоль
       docsAfterSave = await collection.countDocuments({}, { hint: "_id_" });
       const newNews =  docsAfterSave - docsBeforeSave
-      log(`\nНовых записей: ${newNews}`);
-      log(`Сейчас записей в БД: ${docsAfterSave}`);
+      console.log(`\nНовых записей: ${newNews}`);
+      console.log(`Сейчас записей в БД: ${docsAfterSave}`);
       sendToTelegram(newNews, docsAfterSave)
     } else {
       // Выводим в консоль другие ошибки, отличные от ошибки дубликата ключа
-      log('Failed to save data to MongoDB:', error);
+      console.log('Failed to save data to MongoDB:', error);
     }
   } finally {
     await client.close();
@@ -181,6 +180,16 @@ async function main() {
 
 // Точка входа
 export default function startParser() {
-  main()
-  return "ok"
+  return new Promise((resolve, reject) => {
+    main()
+      .then(() => {
+        console.log("Parsing completed.");
+        resolve("Parsing completed.");
+      })
+      .catch((error) => {
+        console.error("Error during parsing:", error);
+        reject(error);
+      });
+  });
 }
+

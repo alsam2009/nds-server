@@ -1,9 +1,6 @@
 import News from '../models/News.js'
 import startParser from "../parsers/ydz/parser.js";
 
-
-
-
 export const getNews = async (req, res) => {
   try {
     // Парсинг параметров запроса
@@ -93,12 +90,12 @@ export const getNewsById = async (req, res) => {
 //     });
 // };
 
-export const launchParser = (req, res) => {
+export const launchParser = async (req, res) => {
   try {
     if ('start' in req.query) {
-      startParser()
+      await startParser()
       res.status(200).json({
-        message: 'Парсер успешно запущен.',
+        message: 'Парсер успешно отработал.',
       });
     } else {
       res.status(400).json({
